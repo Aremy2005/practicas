@@ -1,0 +1,224 @@
+/* ==========================================================
+   PRÁCTICA 6 - Principios de diseño C.R.A.P.
+   Técnicas aplicadas a la práctica 5:
+     1) ALINEACIÓN  -> un único eje izquierdo fuerte para todo
+     2) PROXIMIDAD  -> lo relacionado va junto, lo distinto va separado
+   ========================================================== */
+
+/* ---------- ALINEACIÓN: el eje compartido ----------
+   --ancho : ancho máximo del contenido.
+   --eje   : espacio lateral. En pantallas anchas deja el contenido en una
+             columna centrada; en pantallas angostas usa 6% a cada lado.
+   Encabezado, secciones y pie usan EL MISMO valor, por lo que el borde
+   izquierdo de todos los elementos cae en la misma línea vertical. */
+:root {
+    --ancho: 920px;
+    --eje: max(6%, calc((100% - var(--ancho)) / 2));
+
+    /* PROXIMIDAD: escala de espacios (poco = relacionado, mucho = separado) */
+    --espacio-etiqueta: 4px;   /* etiqueta -> su propio texto */
+    --espacio-grupo: 30px;     /* entre grupos distintos de una sección */
+    --espacio-seccion: 60px;   /* arriba y abajo de cada sección */
+}
+
+/* Reinicio básico para que todo abarque el 100% sin márgenes blancos */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    line-height: 1.7;
+    color: #1e293b;
+}
+
+/* 1. ENCABEZADO
+   ALINEACIÓN: se cambió el centrado por alineación a la izquierda, sobre el
+   mismo eje que los títulos y los párrafos. */
+.encabezado {
+    width: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+    color: #f8fafc;
+    text-align: left;
+    padding: 55px var(--eje);
+    border-bottom: 6px solid #d97706;
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 3em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fbbf24;
+}
+
+/* PROXIMIDAD: el subtítulo queda cerca del título al que complementa */
+.subtitulo {
+    margin: 8px 0 0 0;
+    font-size: 1.15em;
+    color: #cbd5e1;
+}
+
+/* 2. CONTENEDOR Y SECCIONES A ANCHO COMPLETO (los fondos siguen de borde a borde) */
+.contenedor-secciones {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.seccion {
+    width: 100%;
+    padding: var(--espacio-seccion) var(--eje);
+    border-bottom: 2px solid #cbd5e1;
+}
+
+/* Primera sección: Fondo marfil cálido */
+.seccion-clara {
+    background-color: #faf8f5;
+}
+
+/* Segunda sección: Fondo azul pizarra suave para diferenciar */
+.seccion-acento {
+    background-color: #e2e8f0;
+}
+
+/* ALINEACIÓN: antes el título tenía una barra lateral con relleno que movía el
+   texto 21px hacia la derecha del resto del contenido. Ahora la barra de
+   color va ARRIBA y el texto del título queda exactamente sobre el eje. */
+.seccion h2 {
+    margin: 0 0 24px 0;
+    font-size: 2em;
+    line-height: 1.25;
+    color: #0f172a;
+}
+
+.seccion h2::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 6px;
+    margin-bottom: 14px;
+    background-color: #d97706;
+    border-radius: 3px;
+}
+
+.seccion h3 {
+    margin: 0 0 18px 0;
+    font-size: 1.35em;
+    color: #9a3412;
+}
+
+/* ALINEACIÓN: se limita la longitud de línea para que los párrafos sean
+   cómodos de leer y todos nazcan en el mismo borde izquierdo. */
+.seccion p {
+    max-width: 68ch;
+    font-size: 1.08em;
+    margin: 0 0 16px 0;
+}
+
+/* ---------- PROXIMIDAD en la sección 1 ----------
+   Cada dato (Ubicación, Actividad, Gastronomía) es un grupo: la etiqueta va
+   justo encima de su texto (espacio pequeño) y entre un dato y otro hay un
+   espacio mayor, así se ven como tres bloques distintos. */
+.seccion .dato {
+    margin: 0 0 var(--espacio-grupo) 0;
+}
+
+.seccion .dato:last-child {
+    margin-bottom: 0;
+}
+
+.dato strong {
+    display: block;
+    margin-bottom: var(--espacio-etiqueta);
+    color: #9a3412;
+}
+
+/* ---------- PROXIMIDAD en la sección 2 ----------
+   El título "Opciones para comprar" y sus dos opciones forman UN grupo,
+   separado del párrafo descriptivo por un espacio grande y una línea fina. */
+.grupo-compra {
+    margin-top: 48px;
+    padding-top: 30px;
+    border-top: 2px solid #cbd5e1;
+}
+
+.grupo-compra .opcion {
+    margin: 0 0 26px 0;
+}
+
+.grupo-compra .opcion:last-child {
+    margin-bottom: 0;
+}
+
+/* La etiqueta de cada opción queda pegada a su enlace o imagen */
+.opcion strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.bloque-imagen p {
+    margin: 0 0 10px 0;
+}
+
+/* Enlace de texto */
+.liga-texto {
+    color: #b45309;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 2px solid #b45309;
+    padding-bottom: 2px;
+    transition: all 0.25s ease;
+}
+
+.liga-texto:hover {
+    color: #0f172a;
+    border-bottom-color: #0f172a;
+}
+
+/* Bloque e imagen con bordes redondeados.
+   ALINEACIÓN: la imagen nace en el mismo borde izquierdo que el texto. */
+.bloque-imagen {
+    margin-top: 0;
+}
+
+.imagen-redondeada {
+    display: block;
+    width: 380px;
+    max-width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 30px; /* Bordes redondeados */
+    border: 4px solid #d97706;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imagen-redondeada:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 25px rgba(217, 119, 6, 0.4);
+}
+
+/* 3. PIE DE PÁGINA
+   ALINEACIÓN: también a la izquierda, sobre el mismo eje. */
+.pie-pagina {
+    width: 100%;
+    background-color: #0f172a;
+    color: #f8fafc;
+    text-align: left;
+    padding: 25px var(--eje);
+    border-top: 6px solid #d97706;
+}
+
+.pie-pagina p {
+    margin: 0;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+}
+
+.pie-pagina strong {
+    color: #fbbf24;
+}
